@@ -1,34 +1,36 @@
 from num2words import num2words
 
-# список доступных операторов
-oper = ['+', '-', '*', '/']
-# основной цикл. при вводе некорректной инфы выходим из цикла и шлем по пути русского военного корабля
+
+oper = ['+', '-', '*', '/']     # список доступных операторов
+count_cycle = 0     # переменная количества циклов
+# основной цикл.
 while True:
-    arg1 = input('Введите первый аргумент: ')
-    if arg1[0] == "-":
-        try:
-            arg1 = int(arg1[1:]) * -1
-        except:
-            break
-    else:
-        try:
-            arg1 = int(arg1)
-        except:
-            break
-    operator = input('Выберете действие +, -, *, /')
-    if operator not in oper:
+    arg1 = input('Введите первый аргумент (или "стоп" для завершения): ')   # вводим первый аргумент
+    if arg1.lower() == "стоп" or arg1.lower() == "stop":    # проверяем стоп слово,
+        print('Hasta la vista...')                          # оно может быть написано в любом регистре
         break
-    arg2 = input('Введите второй аргумент: ')
-    if arg2[0] == "-":
-        try:
-            arg2 = int(arg2[1:]) * -1
-        except:
-            break
     else:
         try:
-            arg2 = int(arg2)
-        except:
-            break
+            arg1 = float(arg1)                # пробум перевести строку во float, если не получается попускаем итерацию
+        except ValueError:
+            print(" Это не число! Попробуй еще разок!")
+            continue
+    operator = input('Выберете действие +, -, *, /(или "стоп" для завершения)')
+    if operator.lower() == "стоп" or operator.lower() == "stop":
+        print('Hasta la vista...')
+    elif operator not in oper:
+        print("Данное действие не поддерживается. Давай начнем заново!")
+        continue
+    arg2 = input('Введите второй аргумент (или "стоп" для завершения): ')
+    if arg2.lower() == "стоп" or arg2.lower() == "stop":
+        print('Hasta la vista...')
+        break
+    else:
+        try:
+            arg2 = float(arg2)
+        except ValueError:
+            print(" Это не число! Попробуй еще разок!")
+            continue
     if operator == "+":
         result = arg1 + arg2
     elif operator == "-":
@@ -36,12 +38,12 @@ while True:
     elif operator == "*":
         result = arg1 * arg2
     else:
-        if arg2 == 0:
-            print('На ноль делить нельзя!')
-            break
-        else:
+        try:
             result = arg1 / arg2
-    print(f'Результат: {num2words(result, lang="ru")}')
+        except ZeroDivisionError:
+            print ("На ноль делить нельзя, двоечник! Подумай над своим поведением и начни заново!")
+            continue
+    count_cycle += 1
+    print(f'Результат: {num2words(result, lang="ru")}\nКоличество успешных решений: {num2words(count_cycle, lang="ru")}')
 
 
-print("Будь внимательнее. Попробуй еще раз!")
