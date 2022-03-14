@@ -1,4 +1,9 @@
-from num2words import num2words
+try:
+    from num2words import num2words
+    num = True
+except ModuleNotFoundError:
+    num = False
+    print("Отсутствует модуль num2words. Для корректной работы выполните команду: pip install num2words")
 
 
 oper = ['+', '-', '*', '/']     # список доступных операторов
@@ -44,6 +49,10 @@ while True:
             print ("На ноль делить нельзя, двоечник! Подумай над своим поведением и начни заново!")
             continue
     count_cycle += 1
-    print(f'Результат: {num2words(result, lang="ru")}\nКоличество успешных решений: {num2words(count_cycle, lang="ru")}')
-
+    if num:
+        print(
+            f'Результат: {num2words(result, lang="ru")}\nКоличество успешных решений: {num2words(count_cycle, lang="ru")}')
+    else:
+        print(
+            f'Результат: {result}\nКоличество успешных решений: {count_cycle}')
 
